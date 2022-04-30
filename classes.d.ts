@@ -23,7 +23,7 @@ export declare class Transaction {
 
 export declare class Blockchain {
     constructor();
-    private chain: Block[];
+    public chain: Block[];
     public length: number;
 
     public getLastBlock(): number;
