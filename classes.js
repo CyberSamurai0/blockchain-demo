@@ -4,7 +4,7 @@ class Block {
     index;
     time;
     transactionList;
-    previousHash;
+    previousHash = "";
     hash;
 
     constructor(transactions, index) {
@@ -21,12 +21,18 @@ class Block {
         return sha256lib.sha256(info)
     }
 
-    addTransaction(transaction) {
-        this.transactionList.push(transaction);
+    setPreviousHash(hash) {
+        this.previousHash = hash;
     }
 }
 
 class Transaction {
+    sender;
+    receiver;
+    amount;
+    time;
+    hash;
+
     constructor(sender, receiver, amount) {
         this.sender = sender;
         this.receiver = receiver;
@@ -53,7 +59,7 @@ class Blockchain {
 
     addBlock(block) {
         if (this.chain.length < 1) block.previousHash = "origin";
-        else block.previousHash = this.getLastBlock().hash;
+        else block.setPreviousHash(this.getLastBlock().hash);
         this.chain.push(block);
         this.length = this.chain.length;
     }

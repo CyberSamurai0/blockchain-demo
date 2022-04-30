@@ -7,6 +7,7 @@ export declare class Block {
     private hash: string;
 
     public getHash(): string;
+    public setPreviousHash(hash: string): void;
 }
 
 export declare class Transaction {
