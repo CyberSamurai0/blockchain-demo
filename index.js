@@ -13,13 +13,6 @@ app.use(Express.static("./assets"));
 app.use(jsonParser);
 
 app.post("/new-block", async (req, res) => {
-    /*if (req.body["sender"] && req.body["receiver"] && req.body["amount"] && typeof req.body["sender"] === "string" && typeof req.body["receiver"] === "string" && typeof req.body["amount"] === "string" && parseInt(req.body["amount"])) {
-        transactions.push(new Transaction(req.body["sender"], req.body["receiver"], parseInt(req.body["amount"])));
-        BlockChain.addBlock(new Block(transactions, BlockChain.length));
-        console.log("Added new block to blockchain:");
-        console.log(BlockChain.getLastBlock());
-        res.send(BlockChain.getLastBlock());
-    }*/
     try {
         if (req.body["transactions"] && Array.isArray(req.body["transactions"]) && req.body["transactions"].length >= 1) {
             let valid = true;
