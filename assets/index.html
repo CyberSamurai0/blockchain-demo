@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Blockchain</title>
+        <script>
+            let pendingTransactions = [];
+
+            function pendingDisplayUpdate() {
+                let displayTable = document.getElementById("pendingDisplay");
+                if (pendingTransactions.length >= 1) {
+                    displayTable.style.display = "block";
+                    displayTable.innerHTML = "<tr><th>Sender</th><th>Receiver</th><th>Amount</th></tr>";
+                    for (let t of pendingTransactions) {
+                        let row = document.createElement("tr");
+                        row.innerHTML = `<td>${t["sender"]}</td><td>${t["receiver"]}</td><td>${t["amount"]}</td>`;
+                        displayTable.appendChild(row);
+                    }
+                } else {
+                    displayTable.style.display = "none";
+                    displayTable.innerHTML = "<tr><th>Sender</th><th>Receiver</th><th>Amount</th></tr>"
+                }
+            }
+
+            function newTransaction() {
+                let sender = document.getElementById("sender").value;
+                let receiver = document.getElementById("receiver").value;
+                let amount = document.getElementById("amount").value;
+
+                pendingTransactions.push({"sender": sender, "receiver": receiver, "amount": amount});
+                pendingDisplayUpdate();
+            }
+
+            function submitBlock() {
+                let req = new XMLHttpRequest()
+                req.open("POST", "/new-block");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json");
+
+                req.onreadystatechange = function() {
+                    if (req.readyState === 4) {
+                        console.log(req.status);
+                        console.log(req.responseText);
+                        if (req.status === 200) {
+                            pendingTransactions = [];
+                            pendingDisplayUpdate();
+                        }
+                    }
+                }
+
+                req.send(JSON.stringify({transactions: pendingTransactions}));
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Blockchain</h1>
+        <label for="sender">Sender:</label><br><input type="text" id="sender" name="sender"><br><br>
+        <label for="receiver">Receiver:</label><br><input type="text" id="receiver" name="sender"><br><br>
+        <label for="amount">Amount:</label><br><input type="number" id="amount" name="sender"><br><br>
+        <button onclick="newTransaction()">Add Transaction</button>
+        <button onclick="submitBlock()">Submit Block</button>
+
+        <table id="pendingDisplay" style="width: 45%; display: none">
+            <tr>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Amount</th>
+            </tr>
+        </table>
+    </body>
+</html>
