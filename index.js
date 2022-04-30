@@ -7,7 +7,6 @@ let app = Express();
 let jsonParser = bodyParser.json();
 
 let BlockChain = new Blockchain();
-let transactions = [];
 
 app.use(Express.static("./assets"));
 app.use(jsonParser);
@@ -35,6 +34,15 @@ app.post("/new-block", async (req, res) => {
         } else {
             res.status(400).send();
         }
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+});
+
+app.get("/blockchain", (req, res) => {
+    try {
+        res.status(200).send(JSON.stringify(BlockChain));
     } catch (e) {
         console.error(e);
         res.status(500).send();
