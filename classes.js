@@ -37,7 +37,7 @@ class Transaction {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
-        this.time = new Date().getDate();
+        this.time = new Date().getTime();
         this.hash = this.getHash();
     }
 
